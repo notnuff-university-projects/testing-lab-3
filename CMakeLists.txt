@@ -7,6 +7,8 @@ project(lab3)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_subdirectory(common/matrices)
+
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
@@ -23,27 +25,28 @@ file(GLOB_RECURSE COMPILATION_UNITS_TMP CONFIGURE_DEPENDS
 # Filter out the test files
 set(COMPILATION_UNITS "")
 foreach(file ${COMPILATION_UNITS_TMP})
-    if (NOT file MATCHES "(_test|main)\\.(cpp|c\\+\\+|cc)$")
+    if (NOT file MATCHES "(test|main)\\.(cpp|c\\+\\+|cc)$")
         list(APPEND COMPILATION_UNITS ${file})
     endif()
 endforeach()
 
 file(GLOB_RECURSE TESTS CONFIGURE_DEPENDS
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*_test.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*_test.c++
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*_test.cс
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/*test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/*test.c++
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/*test.cс
 )
 
 add_executable(lab3 src/main.cpp ${COMPILATION_UNITS} ${HEADERS})
+target_link_libraries(lab3 PRIVATE matrices)
 
 set(GTESTLIBS GTest::gtest_main GTest::GTest GTest::Main)
 find_package(GTest REQUIRED)
 
 enable_testing()
-add_executable(tests-all ${TESTS} ${HEADERS} ${COMPILATION_UNITS} )
 
+add_executable(tests-all ${TESTS} ${HEADERS} ${COMPILATION_UNITS})
+target_link_libraries(tests-all matrices)
 target_link_libraries(tests-all ${GTESTLIBS})
-
 include(GoogleTest)
 gtest_discover_tests(tests-all)
 
@@ -55,3 +58,6 @@ add_custom_command(
         "${CMAKE_SOURCE_DIR}/rsc"
         "$<TARGET_FILE_DIR:lab3>/rsc"
 )
+
+
+
