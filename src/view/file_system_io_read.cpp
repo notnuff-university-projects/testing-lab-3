@@ -7,9 +7,8 @@ namespace tetris_view {
 
 FileSystemIO_Read::FileSystemIO_Read(
   const std::string& tar_dir,
-  const std::string& in_file) {
+  const std::string& in_file) : FileSystemDirectoryIO_I(tar_dir) {
 
-  TargetDirectory(tar_dir);
   TargetInputFile(in_file);
 }
 

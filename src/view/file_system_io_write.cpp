@@ -6,10 +6,9 @@ namespace tetris_view {
 
 FileSystemIO_Write::FileSystemIO_Write(
   const std::string& tar_dir,
-  const std::string& out_file) {
+  const std::string& out_file) : FileSystemDirectoryIO_I(tar_dir) {
 
   TargetOutputFile(out_file);
-  TargetDirectory(tar_dir);
 }
 
 void FileSystemIO_Write::Write(const std::string& text) {

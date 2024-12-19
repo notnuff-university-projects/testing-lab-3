@@ -36,22 +36,27 @@ std::shared_ptr<GameField> TetrisController::ParceStringToGameField(
     throw parse_error(error_base + "empty string");
   }
 
-  std::istringstream str_stream(input_str);
-  int cols, rows;
+  std::stringstream str_stream(input_str);
+  int rows, cols;
 
-  if (!(str_stream >> cols >> rows)) {
+  std::string current_line;
+  std::getline(str_stream, current_line);
+
+  if ( !( std::stringstream(current_line) >> rows >> cols) ) {
     throw parse_error(error_base + "invalid dimensions");
   }
 
-  auto game_field = std::make_shared<GameField>(cols, rows);
+  auto game_field = std::make_shared<GameField>(rows, cols);
 
-  std::string current_line;
   for (int i = 0; i < rows; ++i) {
     if( !std::getline(str_stream, current_line) )
       throw parse_error(error_base + "rows not matching");
+
     auto line_cols = static_cast<int>(current_line.size());
+
     if (line_cols != cols)
       throw parse_error(error_base + "columns not matching");
+
     for (int j = 0; j < line_cols; ++j) {
       switch (current_line[j]) {
         case '.':

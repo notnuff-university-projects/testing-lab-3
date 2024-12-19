@@ -19,3 +19,18 @@ std::shared_ptr<GameField> CreateGameField(std::initializer_list<std::initialize
 
   return field;
 }
+
+bool AreFieldsEqual(const std::shared_ptr<GameField>& gf1,
+  const std::shared_ptr<GameField>& gf2)  {
+
+  if (gf1->Cols() != gf2->Cols()) return false;
+  if (gf1->Rows() != gf2->Rows()) return false;
+
+  for (int i = 0; i < gf1->Rows(); ++i) {
+    for (int j = 0; j < gf1->Cols(); ++j) {
+      if (gf1->GetCellState(i, j) != gf2->GetCellState(i, j)) return false;
+    }
+  }
+
+  return true;
+}

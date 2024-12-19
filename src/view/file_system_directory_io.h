@@ -6,7 +6,7 @@
 
 namespace tetris_view {
 
-class FileSystemDirectoryIO_I : public Game_IO_I {
+class FileSystemDirectoryIO_I : public virtual Game_IO_I {
 public:
   explicit FileSystemDirectoryIO_I(const std::string& tar_dir);
   virtual ~FileSystemDirectoryIO_I() override = default;

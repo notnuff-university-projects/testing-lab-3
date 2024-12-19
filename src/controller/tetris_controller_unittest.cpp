@@ -44,6 +44,12 @@ public:
   std::string WrittenOutput;
 };
 
+class TetrisControllerTest : public TetrisController {
+public:
+  std::shared_ptr<GameField> GetGameField() {
+    return game_model_->GetField();
+  };
+};
 
 TEST(TetrisController, ParseEmptyFail) {
   auto io = std::make_shared<Game_IO_Mock>();
@@ -58,6 +64,7 @@ TEST(TetrisController, ParseEmptyFail) {
 
 TEST(TetrisController, ParseUnknownCharacterFail) {
   auto io = std::make_shared<Game_IO_Mock>();
+
   TetrisController controller;
   controller.SetIOInterface(io);
 
@@ -68,6 +75,7 @@ TEST(TetrisController, ParseUnknownCharacterFail) {
 
 TEST(TetrisController, ParseNoDimensionsFail) {
   auto io = std::make_shared<Game_IO_Mock>();
+
   TetrisController controller;
   controller.SetIOInterface(io);
 
@@ -78,12 +86,42 @@ TEST(TetrisController, ParseNoDimensionsFail) {
 
 TEST(TetrisController, ParseWrongDimensionsFail) {
   auto io = std::make_shared<Game_IO_Mock>();
+
   TetrisController controller;
   controller.SetIOInterface(io);
 
   io->ReturnInput = "3 3\n#\n#\n";
 
   EXPECT_THROW(controller.GameInitFromIO(), parse_error);
+}
+
+TEST(TetrisController, ParceCorrectField) {
+  auto io = std::make_shared<Game_IO_Mock>();
+
+  TetrisControllerTest controller;
+  controller.SetIOInterface(io);
+
+  std::stringstream ss;
+  ss << "5 6" << '\n';
+  ss << "..p..." << '\n';
+  ss << "##p.##" << '\n';
+  ss << "##pp##" << '\n';
+  ss << "##..##" << '\n';
+  ss << "##..##" << '\n';
+
+  io->ReturnInput = ss.str();
+
+  controller.GameInitFromIO();
+  auto gf = controller.GetGameField();
+  auto expected_field = CreateGameField({
+    {E, E, G, E, E, E},
+    {L, L, G, E, L, L},
+    {L, L, G, G, L, L},
+    {L, L, E, E, L, L},
+    {L, L, E, E, L, L},
+  });
+
+  EXPECT_TRUE(AreFieldsEqual(gf, expected_field));
 }
 
 

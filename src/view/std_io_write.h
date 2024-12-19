@@ -5,7 +5,7 @@
 
 namespace tetris_view {
 
-class StdIoWrite : public Game_IO_I {
+class StdIoWrite : public virtual Game_IO_I {
 public:
   StdIoWrite() = default;
   virtual ~StdIoWrite() override = default;
