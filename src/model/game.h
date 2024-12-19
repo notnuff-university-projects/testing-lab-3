@@ -11,10 +11,11 @@ namespace tetris_model {
 class Game {
 public:
   explicit Game(const std::shared_ptr<GameField>& init_field);
+  virtual ~Game() = default;
 
 public:
-  void Run();
-  std::shared_ptr<GameField> GetField() const;
+  virtual void Run();
+  virtual std::shared_ptr<GameField> GetField() const;
 
 protected:
   bool IsCanMoveFigure(int dRow, int dCol);

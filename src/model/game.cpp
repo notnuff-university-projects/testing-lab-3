@@ -1,9 +1,9 @@
 #include "game.h"
 
 #include <vector>
+#include <exceptions/exceptions.h>
 
 #include "cell.h"
-#include "exceptions.h"
 
 namespace tetris_model {
 

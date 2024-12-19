@@ -15,19 +15,21 @@ namespace tetris_controller {
 
 class TetrisController {
 public:
-  explicit TetrisController(const std::shared_ptr<Game_IO_I>& io_interface);
+  TetrisController() = default;
   ~TetrisController() = default;
 
 public:
-  void GameInit();
+  void SetIOInterface(const std::shared_ptr<Game_IO_I>& io_interface);
+  void SetGameModel(const std::shared_ptr<Game>& game);
+
+public:
+  void GameInitFromIO();
   void GameSimulate();
   void GamePrint();
 
 protected:
   std::shared_ptr<GameField> ParceStringToGameField(const std::string& input_str);
   std::string ParceGameFieldToString(const std::shared_ptr<GameField>& input_field);
-
-
 
 protected:
   std::shared_ptr<Game> game_model_ = nullptr;

@@ -38,6 +38,7 @@ file(GLOB_RECURSE TESTS CONFIGURE_DEPENDS
 
 add_executable(lab3 src/main.cpp ${COMPILATION_UNITS} ${HEADERS})
 target_link_libraries(lab3 PRIVATE matrices)
+target_include_directories(lab3 PRIVATE common)
 
 set(GTESTLIBS GTest::gtest_main GTest::GTest GTest::Main)
 find_package(GTest REQUIRED)
@@ -47,6 +48,8 @@ enable_testing()
 add_executable(tests-all ${TESTS} ${HEADERS} ${COMPILATION_UNITS})
 target_link_libraries(tests-all matrices)
 target_link_libraries(tests-all ${GTESTLIBS})
+target_include_directories(tests-all PRIVATE common src/tests_common)
+
 include(GoogleTest)
 gtest_discover_tests(tests-all)
 

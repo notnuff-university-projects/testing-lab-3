@@ -1,29 +1,11 @@
 #include <gtest/gtest.h>
+#include <exceptions/exceptions.h>
 
 #include "game.h"
-#include "exceptions.h"
+#include "game_field_common.h"
 
 namespace tetris_model {
 
-std::shared_ptr<GameField> CreateGameField(std::initializer_list<std::initializer_list<CellState>> matrix) {
-  auto rows = matrix.size();
-  if (rows == 0) return nullptr;
-  auto cols = matrix.begin()->size();
-
-  auto field = std::make_shared<GameField>(rows, cols);
-
-  int i = 0;
-  for(const auto& cell_rows : matrix) {
-    int j = 0;
-    for(const auto& cell : cell_rows) {
-      field->SetCellState(i, j, cell);
-      ++j;
-    }
-    ++i;
-  }
-
-  return field;
-}
 
 bool AreFieldsEqual(const std::shared_ptr<GameField>& gf1, const std::shared_ptr<GameField>& gf2) {
   if (gf1->Cols() != gf2->Cols()) return false;
@@ -63,11 +45,6 @@ TEST(TetrisModel, GameInit) {
     EXPECT_NO_THROW(auto game = Game(gameField));
   }
 }
-
-
-const auto E = CellState::EMPTY;
-const auto G = CellState::FIGURE;
-const auto L = CellState::LANDSCAPE;
 
 using init_matrix_t = std::initializer_list<std::initializer_list<CellState>>;
 TEST(TetrisModel, GameEmptyRun) {
