@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 #include <exceptions/exceptions.h>
 
 #include "tetris_controller.h"
